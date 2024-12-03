@@ -6,13 +6,19 @@ import subprocess
 
 class SparkApplicationSensor(BaseSensorOperator):
     def poke(self, context):
-        result = subprocess.run(
-            ["kubectl", "get", "sparkapplication", "spark-history", "-o", "jsonpath='{.status.applicationState.state}'"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        state = result.stdout.decode('utf-8').strip().strip("'")
-        return state == "COMPLETED"
+        try:
+            result = subprocess.run(
+                ["kubectl", "get", "sparkapplication", "spark-history", "-o", "jsonpath={.status.applicationState.state}"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+            )
+            state = result.stdout.decode('utf-8').strip().strip("'")
+            self.log.info(f"Current SparkApplication state: {state}")
+            return state == "COMPLETED"
+        except subprocess.CalledProcessError as e:
+            self.log.error(f"Error fetching SparkApplication state: {e.stderr.decode('utf-8')}")
+            return False
 
 default_args = {
     'owner': 'airflow',
