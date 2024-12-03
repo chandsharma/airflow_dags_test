@@ -24,7 +24,7 @@ default_args = {
 }
 
 dag = DAG(
-    'submit_spark_job11',
+    'submit_spark_job11-wait',
     default_args=default_args,
     description='Submit Spark job to Kubernetes',
     schedule=timedelta(days=1),
@@ -33,7 +33,7 @@ dag = DAG(
 )
 
 submit_spark_job = KubernetesPodOperator(
-    task_id='submit_spark_job',
+    task_id='submit_spark_jobair',
     name='submit-spark-pi',
     namespace='default',
     image='bitnami/kubectl:latest',
