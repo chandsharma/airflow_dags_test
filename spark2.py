@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
-# from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesSensor
+from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 from datetime import datetime, timedelta
 
 # Default arguments for the DAG
@@ -69,15 +69,15 @@ submit_spark_job = SparkKubernetesOperator(
     dag=dag,
 )
 
-# Monitor the Spark job status using SparkKubernetesSensor
-# monitor_spark_job = SparkKubernetesSensor(
-#     task_id="monitor_spark_job1",
-#     namespace="default",
-#     application_name="spark-history-airflow-spark-k8s",
-#     kubernetes_conn_id="kubernetes_default",
-#     poke_interval=60,  # Check every minute
-#     timeout=3600,  # Timeout after 1 hour
-#     dag=dag,
-# )
+Monitor the Spark job status using SparkKubernetesSensor
+monitor_spark_job = SparkKubernetesSensor(
+    task_id="monitor_spark_job2",
+    namespace="default",
+    application_name="spark-history-airflow-spark-k8s2",
+    kubernetes_conn_id="kubernetes_default",
+    poke_interval=60,  # Check every minute
+    timeout=3600,  # Timeout after 1 hour
+    dag=dag,
+)
 
-# submit_spark_job >> monitor_spark_job
+submit_spark_job >> monitor_spark_job
