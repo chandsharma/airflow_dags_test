@@ -69,7 +69,7 @@ submit_spark_job = SparkKubernetesOperator(
     dag=dag,
 )
 
-Monitor the Spark job status using SparkKubernetesSensor
+# Monitor the Spark job status using SparkKubernetesSensor
 monitor_spark_job = SparkKubernetesSensor(
     task_id="monitor_spark_job2",
     namespace="default",
