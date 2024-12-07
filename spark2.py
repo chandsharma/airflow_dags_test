@@ -27,43 +27,7 @@ dag = DAG(
 submit_spark_job = SparkKubernetesOperator(
     task_id="submit_spark_job",
     namespace="default",
-    application_file=None,  # Dynamic configuration
-    spark_application={
-        "apiVersion": "sparkoperator.k8s.io/v1beta2",
-        "kind": "SparkApplication",
-        "metadata": {
-            "name": "spark-history-airflow-spark-k8s2",
-            "namespace": "default",
-        },
-        "spec": {
-            "type": "Scala",
-            "mode": "cluster",
-            "image": "docker.io/channnuu/chandan_spark:3.5.2",
-            "imagePullPolicy": "IfNotPresent",
-            "mainClass": "org.apache.spark.examples.SparkPi",
-            "mainApplicationFile": "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.2.jar",
-            "sparkVersion": "3.1.2",
-            "restartPolicy": {"type": "Never"},
-            "sparkConf": {
-                "spark.eventLog.enabled": "true",
-                "spark.eventLog.dir": "wasb://spark-logs@vishalsparklogs.blob.core.windows.net/spark-logs",
-                "spark.kubernetes.authenticate.driver.serviceAccountName": "spark",
-                "spark.hadoop.fs.azure.account.key.vishalsparklogs.blob.core.windows.net": "XZfQviaXeNqQVHjTD6Cwg1VbiUK8YhDWqOSTDskYv5oFd4YzfajqGUHZBE3/2My1mw9hPXfeceYn+AStsFBh7A==",
-            },
-            "driver": {
-                "cores": 1,
-                "memory": "512m",
-                "serviceAccount": "spark",
-                "labels": {"version": "3.1.2"},
-                "env": [{"name": "SPARK_DRIVER_MEMORY", "value": "512m"}],
-            },
-            "executor": {
-                "cores": 1,
-                "instances": 2,
-                "memory": "512m",
-            },
-        },
-    },
+    application_file="https://vishalsparklogs.blob.core.windows.net/spark-logs/sparktest8.yaml",  # Dynamic configuration
     kubernetes_conn_id="kubernetes_default",  # Connection to the Kubernetes cluster
     do_xcom_push=True,  # Capture application logs
     dag=dag,
