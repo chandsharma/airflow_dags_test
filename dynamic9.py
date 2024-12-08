@@ -35,6 +35,9 @@ submit = SparkKubernetesOperator(
     application_file='https://vishalsparklogs.blob.core.windows.net/spark-logs/sparktest8.yaml',
     kubernetes_conn_id='kubernetes_default',
     do_xcom_push=True,
+    log_events_on_failure=True,
+    get_logs=True,
+    
 )
 
 submit
