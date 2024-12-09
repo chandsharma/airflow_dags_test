@@ -81,11 +81,11 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": timedelta(minutes=5),
+    "retry_delay": timedelta(minutes=1),
 }
 
 dag = DAG(
-    "submit_spark_job_airflow_minimal8",
+    "submit_spark_job_air_dec9",
     default_args=default_args,
     description="Submit Spark job to Kubernetes via Airflow",
     schedule=timedelta(days=1),
@@ -94,8 +94,8 @@ dag = DAG(
 )
 
 submit_spark_job = KubernetesPodOperator(
-    task_id="submit_spark_airflowminimal8",
-    name="submit-spark-airflowminimal8",
+    task_id="submit_spark_job_air_dec9",
+    name="submit_spark-job-air-dec9",
     namespace="default",
     image="bitnami/kubectl:latest",
     cmds=["kubectl", "apply", "-f", "https://vishalsparklogs.blob.core.windows.net/spark-logs/sparktest8.yaml"],
